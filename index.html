@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ada Büfe Menü</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #f5f0e8;
+            --white: #ffffff;
+            --teal: #1a7a6e;
+            --teal-light: #e8f5f3;
+            --teal-mid: #c2e8e2;
+            --orange: #e85d20;
+            --orange-light: #fff3ee;
+            --gold: #d4860a;
+            --gold-light: #fff8e6;
+            --text: #1e1e1e;
+            --text-muted: #6b6b6b;
+            --border: #e0d8cc;
+            --maxi-bg: #fff8e6;
+            --maxi-border: #f0d080;
+            --menu-bg: #e8f5f3;
+            --menu-border: #a0d4cc;
+            --drinks-bg: #fff3ee;
+            --drinks-border: #f0b090;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding-bottom: 48px;
+        }
+
+        /* ── Hero ── */
+        .hero {
+            background: linear-gradient(135deg, #1a7a6e 0%, #145f56 60%, #0e4840 100%);
+            padding: 36px 24px 28px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 20px;
+            background: var(--bg);
+            border-radius: 20px 20px 0 0;
+        }
+        .hero-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            color: #ffffff;
+            letter-spacing: .02em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .hero-logo .boat { font-size: 2rem; }
+        .hero-tagline {
+            margin-top: 6px;
+            font-size: .82rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,.7);
+        }
+        .et-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 14px;
+            background: rgba(255,255,255,.15);
+            border: 1px solid rgba(255,255,255,.3);
+            color: #fff;
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-radius: 20px;
+        }
+
+        /* ── Contact strip ── */
+        .contact-strip {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 12px 24px;
+            background: var(--teal);
+            flex-wrap: wrap;
+        }
+        .contact-strip a {
+            color: #fff;
+            text-decoration: none;
+            font-size: .82rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .contact-strip svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+        /* ── Wrapper ── */
+        .content {
+            max-width: 560px;
+            margin: 0 auto;
+            padding: 0 14px;
+        }
+
+        /* ── Section header ── */
+        .section { margin-top: 28px; }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--teal);
+            white-space: nowrap;
+        }
+        .section-line {
+            flex: 1; height: 2px;
+            background: linear-gradient(90deg, var(--teal-mid), transparent);
+            border-radius: 1px;
+        }
+
+        /* ── Default item card ── */
+        .item-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .item-info { flex: 1; }
+        .item-name {
+            font-size: .97rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .item-desc {
+            font-size: .76rem;
+            color: var(--text-muted);
+            margin-top: 3px;
+            line-height: 1.45;
+        }
+        .item-price {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--orange);
+            white-space: nowrap;
+        }
+
+        /* ── Maxi section ── */
+        .maxi-section {
+            margin-top: 28px;
+            background: var(--white);
+            border-radius: 20px;
+            padding: 18px 16px 14px;
+            position: relative;
+            /* gradient border via box-shadow layering */
+            box-shadow:
+                0 0 0 2.5px transparent,
+                inset 0 0 0 2.5px transparent;
+        }
+        .maxi-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            padding: 2.5px;
+            background: linear-gradient(135deg, var(--teal) 0%, #5ab89e 40%, var(--orange) 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        .maxi-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .maxi-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            background: linear-gradient(90deg, var(--teal), var(--orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .maxi-line {
+            flex: 1; height: 2px;
+            background: linear-gradient(90deg, var(--teal-mid), transparent);
+        }
+        .maxi-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .maxi-card:last-child { margin-bottom: 0; }
+        .maxi-card .item-name { font-size: .94rem; }
+        .maxi-card .item-price {
+            background: linear-gradient(135deg, var(--teal), var(--orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .badge-maxi {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--teal), var(--orange));
+            color: #fff;
+            font-size: .6rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            padding: 2px 7px;
+            border-radius: 20px;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+
+        /* ── Bottom two-col: Menüler + İçecekler ── */
+        .two-col {
+            margin-top: 28px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .col-box {
+            border-radius: 16px;
+            padding: 16px 14px;
+        }
+        .col-box.menus {
+            background: var(--menu-bg);
+            border: 2px solid var(--menu-border);
+        }
+        .col-box.drinks {
+            background: var(--drinks-bg);
+            border: 2px solid var(--drinks-border);
+        }
+        .col-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .col-box.menus .col-title { color: var(--teal); }
+        .col-box.drinks .col-title { color: var(--orange); }
+        .col-item {
+            padding: 7px 0;
+            border-bottom: 1px solid rgba(0,0,0,.07);
+        }
+        .col-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .col-item-name {
+            font-size: .84rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .col-item-desc {
+            font-size: .71rem;
+            color: var(--text-muted);
+            margin-top: 1px;
+        }
+        .col-item-price {
+            font-family: 'Playfair Display', serif;
+            font-size: .95rem;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+        .col-box.menus .col-item-price { color: var(--teal); }
+        .col-box.drinks .col-item-price { color: var(--orange); }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center;
+            margin-top: 32px;
+            color: var(--text-muted);
+            font-size: .74rem;
+            letter-spacing: .04em;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <div class="hero-logo">
+            <span>Ada</span>
+            <span class="boat">⛵</span>
+            <span>Büfe</span>
+        </div>
+        <div class="hero-tagline">Lezzet &nbsp;·&nbsp; Hijyen &nbsp;·&nbsp; Memnuniyet</div>
+        <div>
+            <span class="et-badge">✦ %100 Saf Et ✦</span>
+        </div>
+    </div>
+
+    <div class="contact-strip">
+        <a href="tel:05407660086">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.02z"/>
+            </svg>
+            Alo Paket: 0540 766 00 86
+        </a>
+        <a href="https://instagram.com/adabufecambel" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <circle cx="12" cy="12" r="4"/>
+                <circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/>
+            </svg>
+            @adabufecambel
+        </a>
+    </div>
+
+    <div class="content">
+
+        <!-- Tekli Ürünler -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">Tekli Ürünler</h2>
+                <div class="section-line"></div>
+            </div>
+
+            <div class="item-card">
+                <div class="item-info">
+                    <div class="item-name">Köfte</div>
+                    <div class="item-desc">%100 saf et köfte · marul, domates, soğan</div>
+                </div>
+                <div class="item-price">220 ₺</div>
+            </div>
+
+            <div class="item-card">
+                <div class="item-info">
+                    <div class="item-name">Kumru</div>
+                    <div class="item-desc">Sosis, salam, sucuk, kaşar</div>
+                </div>
+                <div class="item-price">170 ₺</div>
+            </div>
+
+            <div class="item-card">
+                <div class="item-info">
+                    <div class="item-name">Ayvalık Tost</div>
+                    <div class="item-desc">Sucuk, kaşar, salça</div>
+                </div>
+                <div class="item-price">150 ₺</div>
+            </div>
+
+            <div class="item-card">
+                <div class="item-info">
+                    <div class="item-name">Patso</div>
+                    <div class="item-desc">Baharatlı patates kızartması</div>
+                </div>
+                <div class="item-price">100 ₺</div>
+            </div>
+
+            <div class="item-card">
+                <div class="item-info">
+                    <div class="item-name">Sade Patates Kızartması</div>
+                </div>
+                <div class="item-price">100 ₺</div>
+            </div>
+        </div>
+
+        <!-- Maxi Seçenekler -->
+        <div class="maxi-section">
+            <div class="maxi-header">
+                <h2 class="maxi-title">Maxi Seçenekler</h2>
+                <div class="maxi-line"></div>
+            </div>
+
+            <div class="maxi-card">
+                <div class="item-info">
+                    <div class="item-name">Köfte Kaşar Maxi <span class="badge-maxi">Maxi</span></div>
+                    <div class="item-desc">%100 saf et köfte, kaşar, marul, domates, soğan</div>
+                </div>
+                <div class="item-price">240 ₺</div>
+            </div>
+
+            <div class="maxi-card">
+                <div class="item-info">
+                    <div class="item-name">Kumru Maxi <span class="badge-maxi">Maxi</span></div>
+                    <div class="item-desc">Sosis, salam, sucuk, kaşar</div>
+                </div>
+                <div class="item-price">200 ₺</div>
+            </div>
+
+            <div class="maxi-card">
+                <div class="item-info">
+                    <div class="item-name">Ayvalık Tost Maxi <span class="badge-maxi">Maxi</span></div>
+                    <div class="item-desc">Sucuk, kaşar, salça</div>
+                </div>
+                <div class="item-price">200 ₺</div>
+            </div>
+
+            <div class="maxi-card">
+                <div class="item-info">
+                    <div class="item-name">Patso Maxi <span class="badge-maxi">Maxi</span></div>
+                    <div class="item-desc">Büyük boy baharatlı patates kızartması</div>
+                </div>
+                <div class="item-price">180 ₺</div>
+            </div>
+        </div>
+
+        <!-- Menüler & İçecekler -->
+        <div class="two-col">
+
+            <div class="col-box menus">
+                <div class="col-title">🍽 Menüler</div>
+                <div class="col-item">
+                    <div class="col-item-name">Köfte Menü</div>
+                    <div class="col-item-desc">Köfte + az patso</div>
+                    <div class="col-item-price">250 ₺</div>
+                </div>
+                <div class="col-item">
+                    <div class="col-item-name">Kumru Menü</div>
+                    <div class="col-item-desc">Kumru + az patso</div>
+                    <div class="col-item-price">200 ₺</div>
+                </div>
+                <div class="col-item">
+                    <div class="col-item-name">Tost Menü</div>
+                    <div class="col-item-desc">Ayvalık tost + az patso</div>
+                    <div class="col-item-price">180 ₺</div>
+                </div>
+            </div>
+
+            <div class="col-box drinks">
+                <div class="col-title">🥤 İçecekler</div>
+                <div class="col-item">
+                    <div class="col-item-name">Şalgam</div>
+                    <div class="col-item-price">40 ₺</div>
+                </div>
+                <div class="col-item">
+                    <div class="col-item-name">Ayran</div>
+                    <div class="col-item-price">20 ₺</div>
+                </div>
+                <div class="col-item">
+                    <div class="col-item-name">Cola</div>
+                    <div class="col-item-price">60 ₺</div>
+                </div>
+                <div class="col-item">
+                    <div class="col-item-name">Su</div>
+                    <div class="col-item-price">15 ₺</div>
+                </div>
+                <div class="col-item">
+                    <div class="col-item-name">Gazoz</div>
+                    <div class="col-item-price">40 ₺</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            Fiyatlarımıza KDV dahildir &nbsp;·&nbsp; Afiyet olsun!
+        </div>
+
+    </div>
+
+</body>
+</html>
